@@ -50,8 +50,8 @@ public class DrawView extends View {
     public DrawView(Context context,float x,float y) {
         super(context);
         init();
-        this.a=x;
-        this.b=y;
+        /*this.a=x;
+        this.b=y;*/
     }
 
     public DrawView(Context context, AttributeSet attrs) {

@@ -45,12 +45,12 @@
                 android:src="@drawable/car" />
 
         </LinearLayout>
-        <LinearLayout android:id="@+id/drop_here"
+        <RelativeLayout android:id="@+id/drop_here"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#00ADEF"
-            android:gravity="center">
+            android:gravity="fill">
 
             <ImageView android:id="@+id/dmobile"
                 android:layout_width="190px"
@@ -68,7 +68,9 @@
             <ImageView android:id="@+id/man"
                 android:layout_width="220px"
                 android:layout_height="220px"
-                android:src="@drawable/man" />
+                android:src="@drawable/man"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
 
             <ImageView android:id="@+id/dbike"
                 android:layout_width="190px"
@@ -83,7 +85,7 @@
                 android:paddingRight="30px"
                 android:src="@drawable/car" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
