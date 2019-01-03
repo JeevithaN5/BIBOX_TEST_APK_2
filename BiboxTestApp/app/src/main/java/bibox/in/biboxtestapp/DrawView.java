@@ -9,6 +9,39 @@ import android.view.View;
 
 public class DrawView extends View {
     Paint paint = new Paint();
+    float a,b,c,d;
+
+    public float getA() {
+        return a;
+    }
+
+    public void setA(float a) {
+        this.a = a;
+    }
+
+    public float getB() {
+        return b;
+    }
+
+    public void setB(float b) {
+        this.b = b;
+    }
+
+    public float getC() {
+        return c;
+    }
+
+    public void setC(float c) {
+        this.c = c;
+    }
+
+    public float getD() {
+        return d;
+    }
+
+    public void setD(float d) {
+        this.d = d;
+    }
 
     private void init() {
         paint.setColor(Color.BLACK);
@@ -31,7 +64,6 @@ public class DrawView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawLine(0, 0, 20, 20, paint);
-        canvas.drawLine(20, 0, 0, 20, paint);
+        canvas.drawLine(200, 200, 20, 20, paint);
     }
 }

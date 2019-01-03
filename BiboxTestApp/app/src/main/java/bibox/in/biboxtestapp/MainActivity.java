@@ -1,5 +1,6 @@
 package bibox.in.biboxtestapp;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,6 +26,12 @@ public class MainActivity extends AppCompatActivity  {
     Canvas mobileCanvas,bikeCanvas,carCanvas,cycleCanvas;
     RelativeLayout layout;
 
+    Bitmap bitmap = Bitmap.createBitmap(500,300,Bitmap.Config.ARGB_8888);
+
+    DrawView mobileLine,cycleLine,bikeLine,carLine;// = new DrawView(this);*/
+
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +55,6 @@ public class MainActivity extends AppCompatActivity  {
 
         manX = man.getX();
         manY = man.getY();
-        Bitmap bitmap = Bitmap.createBitmap(500,300,Bitmap.Config.ARGB_8888);
 
         mobileCanvas = new Canvas(bitmap);
         bikeCanvas = new Canvas(bitmap);
@@ -68,15 +74,9 @@ public class MainActivity extends AppCompatActivity  {
                     case DragEvent.ACTION_DRAG_ENTERED:
                         break;
                     case DragEvent.ACTION_DROP:
-                        View view = (View) event.getLocalState();
-                        ViewGroup owner = (ViewGroup) view.getParent();
-                        owner.removeView(view);
-                        LinearLayout container = (LinearLayout) v;
-                        container.addView(view);
-                        view.setVisibility(View.VISIBLE);
+                        dropImage(v,event);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
-                        dropImage(v,event);
                         return true;
                     default:break;
                 }
@@ -84,76 +84,97 @@ public class MainActivity extends AppCompatActivity  {
             }
 
         };
-
-        mobile.setOnDragListener(onDragListener);
+        layout.setOnDragListener(onDragListener);
         mobile.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                selectedImageId = 1;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadow = new View.DragShadowBuilder(mobile);
-                v.startDrag(data, shadow,null ,0 );
-                return false;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    v.updateDragShadow(new View.DragShadowBuilder(null));
+                    v.cancelDragAndDrop();
+                    return true;
+                } else {
+                    selectedImageId = 1;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(mobile);
+                    v.startDrag(data, shadow, null,0 );
+                    return true;
+                }
             }
         });
-        cycle.setOnDragListener(onDragListener);
         cycle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                selectedImageId = 2;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadow = new View.DragShadowBuilder(cycle);
-                v.startDrag(data, shadow,null ,0 );
-                return false;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    /*v.updateDragShadow(new View.DragShadowBuilder(null));
+                    v.cancelDragAndDrop();*/
+                    return true;
+                } else {
+                    selectedImageId = 2;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(cycle);
+                    v.startDrag(data, shadow,null ,0 );
+                    return true;
+                }
             }
         });
-        bike.setOnDragListener(onDragListener);
         bike.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                selectedImageId = 3;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadow = new View.DragShadowBuilder(bike);
-                v.startDrag(data, shadow,null ,0 );
-                return false;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    /*v.updateDragShadow(new View.DragShadowBuilder(null));
+                    v.cancelDragAndDrop();*/
+                    return true;
+                } else {
+                    selectedImageId = 3;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(bike);
+                    v.startDrag(data, shadow,null ,0 );
+                    return false;
+                }
             }
         });
-        car.setOnDragListener(onDragListener);
         car.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                selectedImageId = 4;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadow = new View.DragShadowBuilder(car);
-                v.startDrag(data, shadow,null ,0 );
-                return false;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    /*v.updateDragShadow(new View.DragShadowBuilder(null));
+                    v.cancelDragAndDrop();*/
+                    return true;
+                } else {
+                    selectedImageId = 4;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(car);
+                    v.startDrag(data, shadow,null ,0 );
+                    return false;
+                }
             }
         });
     }
 
     void dropImage(View v,DragEvent event){
         int viewId = v.getId();
-        float x = event.getX()-475;
-        float y = event.getY()-350;
+        float x = event.getX();
+        float y = event.getY();
 
         switch(selectedImageId){
-            case 1 : dmobile.setX(x);
-                dmobile.setY(y);
+            case 1 : dmobile.setX(x - dmobile.getWidth()/2);
+                dmobile.setY(y - dmobile.getHeight()/2);
                 dmobile.setVisibility(View.VISIBLE);
                 connect(mobileCanvas,x,0.0f,0.0f,y);
                 break;
-            case 2 : dcycle.setX(x);
-                dcycle.setY(y);
+            case 2 : dcycle.setX(x - dmobile.getWidth()/2);
+                dcycle.setY(y - dmobile.getHeight()/2);
                 dcycle.setVisibility(View.VISIBLE);
                 connect(cycleCanvas,x,0.0f,0.0f,y);
                 break;
-            case 3 : dbike.setX(x);
-                dbike.setY(y);
+            case 3 : dbike.setX(x - dmobile.getWidth()/2);
+                dbike.setY(y - dmobile.getHeight()/2);
                 dbike.setVisibility(View.VISIBLE);
                 connect(bikeCanvas,x,0.0f,0.0f,y);
                 break;
-            case 4 : dcar.setX(x);
-                dcar.setY(y);
+            case 4 : dcar.setX(x - dmobile.getWidth()/2);
+                dcar.setY(y - dmobile.getHeight()/2);
                 dcar.setVisibility(View.VISIBLE);
                 connect(carCanvas,x,0.0f,0.0f,y);
                 break;
@@ -169,7 +190,5 @@ public class MainActivity extends AppCompatActivity  {
         p.setStrokeWidth(4.5f);
         //p.setAlpha(0x80);
         canvas.drawLine(sx, sy, ex, ey, p);
-
-
     }
 }
