@@ -47,9 +47,11 @@ public class DrawView extends View {
         paint.setColor(Color.BLACK);
     }
 
-    public DrawView(Context context) {
+    public DrawView(Context context,float x,float y) {
         super(context);
         init();
+        this.a=x;
+        this.b=y;
     }
 
     public DrawView(Context context, AttributeSet attrs) {
@@ -64,6 +66,6 @@ public class DrawView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawLine(200, 200, 20, 20, paint);
+        canvas.drawLine(a, b, c, d, paint);
     }
 }

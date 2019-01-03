@@ -23,43 +23,34 @@ public class MainActivity extends AppCompatActivity  {
     int selectedImageId;
     ImageView man,mobile,cycle,bike,car,dmobile,dcycle,dbike,dcar;
     float manX,manY;
-    Canvas mobileCanvas,bikeCanvas,carCanvas,cycleCanvas;
-    RelativeLayout layout;
-
-    Bitmap bitmap = Bitmap.createBitmap(500,300,Bitmap.Config.ARGB_8888);
-
-    DrawView mobileLine,cycleLine,bikeLine,carLine;// = new DrawView(this);*/
-
+    LinearLayout layout;
+    DrawView mobileLine,cycleLine,bikeLine,carLine;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        layout = (RelativeLayout) findViewById(R.id.drop_here);
+        layout = (LinearLayout) findViewById(R.id.drop_here);
         man = (ImageView) findViewById(R.id.man);
         mobile = (ImageView) findViewById(R.id.mobile);
         cycle = (ImageView) findViewById(R.id.cycle);
         bike = (ImageView) findViewById(R.id.bike);
         car = (ImageView) findViewById(R.id.car);
-
         dmobile = (ImageView) findViewById(R.id.dmobile);
         dcycle = (ImageView) findViewById(R.id.dcycle);
         dbike = (ImageView) findViewById(R.id.dbike);
         dcar = (ImageView) findViewById(R.id.dcar);
-
         dmobile.setVisibility(View.INVISIBLE);
         dcycle.setVisibility(View.INVISIBLE);
         dbike.setVisibility(View.INVISIBLE);
         dcar.setVisibility(View.INVISIBLE);
-
-        manX = man.getX();
-        manY = man.getY();
-
-        mobileCanvas = new Canvas(bitmap);
-        bikeCanvas = new Canvas(bitmap);
-        carCanvas = new Canvas(bitmap);
-        cycleCanvas = new Canvas(bitmap);
+        manX = man.getX()-man.getWidth()/2;
+        manY = man.getY()-man.getHeight()/2;
+        mobileLine = new DrawView(this,man.getX()-10.0f,man.getY()-10.0f);
+        cycleLine = new DrawView(this,man.getX()+man.getWidth()+10.0f,man.getY()-10.0f);
+        bikeLine = new DrawView(this,man.getX()-10.0f,man.getY()+man.getHeight()+10.0f);
+        carLine = new DrawView(this,man.getX()+man.getWidth()+10.0f,man.getY()+man.getHeight()+10.0f);
 
         View.OnDragListener onDragListener = new View.OnDragListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -89,65 +80,41 @@ public class MainActivity extends AppCompatActivity  {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    v.updateDragShadow(new View.DragShadowBuilder(null));
-                    v.cancelDragAndDrop();
-                    return true;
-                } else {
-                    selectedImageId = 1;
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(mobile);
-                    v.startDrag(data, shadow, null,0 );
-                    return true;
-                }
+                selectedImageId = 1;
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(mobile);
+                v.startDrag(data, shadow, null,0 );
+                return true;
             }
         });
         cycle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    /*v.updateDragShadow(new View.DragShadowBuilder(null));
-                    v.cancelDragAndDrop();*/
-                    return true;
-                } else {
-                    selectedImageId = 2;
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(cycle);
-                    v.startDrag(data, shadow,null ,0 );
-                    return true;
-                }
+                selectedImageId = 2;
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(cycle);
+                v.startDrag(data, shadow, null, 0);
+                return true;
             }
         });
         bike.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    /*v.updateDragShadow(new View.DragShadowBuilder(null));
-                    v.cancelDragAndDrop();*/
-                    return true;
-                } else {
-                    selectedImageId = 3;
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(bike);
-                    v.startDrag(data, shadow,null ,0 );
-                    return false;
-                }
+                selectedImageId = 3;
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(bike);
+                v.startDrag(data, shadow,null ,0 );
+                return true;
             }
         });
         car.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    /*v.updateDragShadow(new View.DragShadowBuilder(null));
-                    v.cancelDragAndDrop();*/
-                    return true;
-                } else {
-                    selectedImageId = 4;
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(car);
-                    v.startDrag(data, shadow,null ,0 );
-                    return false;
-                }
+                selectedImageId = 4;
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(car);
+                v.startDrag(data, shadow,null ,0 );
+                return true;
             }
         });
     }
@@ -156,39 +123,36 @@ public class MainActivity extends AppCompatActivity  {
         int viewId = v.getId();
         float x = event.getX();
         float y = event.getY();
-
         switch(selectedImageId){
             case 1 : dmobile.setX(x - dmobile.getWidth()/2);
                 dmobile.setY(y - dmobile.getHeight()/2);
                 dmobile.setVisibility(View.VISIBLE);
-                connect(mobileCanvas,x,0.0f,0.0f,y);
+                //connect(mobileLine,manX,manY,x - dmobile.getWidth()/2,y - dmobile.getHeight()/2);
                 break;
             case 2 : dcycle.setX(x - dmobile.getWidth()/2);
                 dcycle.setY(y - dmobile.getHeight()/2);
                 dcycle.setVisibility(View.VISIBLE);
-                connect(cycleCanvas,x,0.0f,0.0f,y);
+                //connect(cycleLine,manX,manY,x - dmobile.getWidth()/2,y - dmobile.getHeight()/2);
                 break;
             case 3 : dbike.setX(x - dmobile.getWidth()/2);
                 dbike.setY(y - dmobile.getHeight()/2);
                 dbike.setVisibility(View.VISIBLE);
-                connect(bikeCanvas,x,0.0f,0.0f,y);
+                //connect(bikeLine,manX,manY,x - dmobile.getWidth()/2,y - dmobile.getHeight()/2);
                 break;
             case 4 : dcar.setX(x - dmobile.getWidth()/2);
                 dcar.setY(y - dmobile.getHeight()/2);
                 dcar.setVisibility(View.VISIBLE);
-                connect(carCanvas,x,0.0f,0.0f,y);
+                //connect(carLine,manX,manY,x - dmobile.getWidth()/2,y - dmobile.getHeight()/2);
                 break;
             default : break;
         }
     }
 
-    protected void connect(Canvas canvas,float sx, float sy, float ex, float ey) {
-        canvas.drawColor(Color.GREEN);
-        Paint p = new Paint();
-        p.setAntiAlias(true);
-        p.setColor(Color.RED);
-        p.setStrokeWidth(4.5f);
-        //p.setAlpha(0x80);
-        canvas.drawLine(sx, sy, ex, ey, p);
+    protected void connect(DrawView drawView,float sx, float sy, float ex, float ey) {
+/*        drawView.setA(sx);
+        drawView.setB(sy);*/
+        drawView.setC(ex);
+        drawView.setD(ey);
+        layout.addView(drawView);
     }
 }
