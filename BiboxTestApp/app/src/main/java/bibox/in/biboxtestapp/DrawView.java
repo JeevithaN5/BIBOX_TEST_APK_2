@@ -11,32 +11,16 @@ public class DrawView extends View {
     Paint paint = new Paint();
     float a,b,c,d;
 
-    public float getA() {
-        return a;
-    }
-
     public void setA(float a) {
         this.a = a;
-    }
-
-    public float getB() {
-        return b;
     }
 
     public void setB(float b) {
         this.b = b;
     }
 
-    public float getC() {
-        return c;
-    }
-
     public void setC(float c) {
         this.c = c;
-    }
-
-    public float getD() {
-        return d;
     }
 
     public void setD(float d) {
@@ -47,11 +31,9 @@ public class DrawView extends View {
         paint.setColor(Color.BLACK);
     }
 
-    public DrawView(Context context,float x,float y) {
+    public DrawView(Context context) {
         super(context);
         init();
-        /*this.a=x;
-        this.b=y;*/
     }
 
     public DrawView(Context context, AttributeSet attrs) {

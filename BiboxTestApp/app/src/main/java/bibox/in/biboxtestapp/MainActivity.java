@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity  {
 
     int selectedImageId;
     ImageView man,mobile,cycle,bike,car,dmobile,dcycle,dbike,dcar;
-    float manX,manY;
     RelativeLayout layout;
     DrawView mobileLine,cycleLine,bikeLine,carLine;
 
@@ -42,17 +41,16 @@ public class MainActivity extends AppCompatActivity  {
         dcycle = (ImageView) findViewById(R.id.dcycle);
         dbike = (ImageView) findViewById(R.id.dbike);
         dcar = (ImageView) findViewById(R.id.dcar);
+
         dmobile.setVisibility(View.INVISIBLE);
         dcycle.setVisibility(View.INVISIBLE);
         dbike.setVisibility(View.INVISIBLE);
         dcar.setVisibility(View.INVISIBLE);
 
-        manX = man.getX()-man.getWidth()/2;
-        manY = man.getY()-man.getHeight()/2;
-        mobileLine = new DrawView(this,manX,manY);
-        cycleLine = new DrawView(this,manX,manY);
-        bikeLine = new DrawView(this,manX,manY);
-        carLine = new DrawView(this,manX,manY);
+        mobileLine = new DrawView(this);
+        cycleLine = new DrawView(this);
+        bikeLine = new DrawView(this);
+        carLine = new DrawView(this);
 
         View.OnDragListener onDragListener = new View.OnDragListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -122,6 +120,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     void dropImage(View v,DragEvent event){
+
         int[] location = new int[2];
         v.getLocationInWindow(location);
         int mx = location[0] + v.getWidth() / 2;
